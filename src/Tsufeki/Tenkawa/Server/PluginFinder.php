@@ -22,12 +22,12 @@ class PluginFinder
         return [
             new ServerPlugin(),
             new PhpPlugin(),
-            new SymfonyPlugin(),
-            new DoctrinePlugin(),
+ //           new SymfonyPlugin(),
+    //        new DoctrinePlugin(),
             new PhpUnitPlugin(),
             new PhonyPlugin(),
             new ProphecyPlugin(),
-            new MockeryPlugin(),
+   //         new MockeryPlugin(),
             new WebMozartAssertPlugin(),
             new BeberleiAssertPlugin(),
         ];

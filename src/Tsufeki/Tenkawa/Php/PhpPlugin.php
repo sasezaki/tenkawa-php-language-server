@@ -363,6 +363,9 @@ class PhpPlugin extends Plugin
         $container->setValue('earlyTerminatingMethodCalls', []);
         $container->setValue('polluteCatchScopeWithTryAssignments', false);
         $container->setValue('polluteScopeWithLoopInitialAssignments', false);
+	$container->setValue('polluteScopeWithAlwaysIterableForeach', false);
+	$container->setValue('allowVarTagAboveStatements', true);
+
         $container->setValue('reportMagicProperties', true);
         $container->setValue('reportMagicMethods', true);
         $container->setValue('reportMaybes', true);
@@ -402,7 +405,8 @@ class PhpPlugin extends Plugin
         $container->setClass(TypeInference::class, PhpStanTypeInference::class);
         $container->setClass(AstPruner::class);
         $container->setClass(NodeScopeResolver::class, null, false,
-            [null, null, null, null, null, 'polluteScopeWithLoopInitialAssignments', 'polluteCatchScopeWithTryAssignments', 'earlyTerminatingMethodCalls']
+		[null, null, null, null, null, 
+		'polluteScopeWithLoopInitialAssignments', 'polluteCatchScopeWithTryAssignments', 'polluteScopeWithAlwaysIterableForeach', 'earlyTerminatingMethodCalls', 'allowVarTagAboveStatements']
         );
         $container->setClass(ScopeFactory::class, null, false, [new Value(Scope::class), null, null, null, 'dynamicConstantNames']);
         $container->setClass(DocumentParser::class);
@@ -468,7 +472,7 @@ class PhpPlugin extends Plugin
         $container->setClass(DynamicFunctionReturnTypeExtension::class, GetParentClassDynamicFunctionReturnTypeExtension::class, true);
         $container->setClass(DynamicFunctionReturnTypeExtension::class, GettimeofdayDynamicFunctionReturnTypeExtension::class, true);
         $container->setClass(DynamicFunctionReturnTypeExtension::class, JsonThrowOnErrorDynamicReturnTypeExtension::class, true);
-        $container->setClass(DynamicFunctionReturnTypeExtension::class, MbStrlenFunctionReturnTypeExtension::class, true);
+        //$container->setClass(DynamicFunctionReturnTypeExtension::class, MbStrlenFunctionReturnTypeExtension::class, true);
         $container->setClass(DynamicFunctionReturnTypeExtension::class, MicrotimeFunctionReturnTypeExtension::class, true);
         $container->setClass(DynamicFunctionReturnTypeExtension::class, MinMaxFunctionReturnTypeExtension::class, true);
         $container->setClass(DynamicFunctionReturnTypeExtension::class, PathinfoFunctionDynamicReturnTypeExtension::class, true);
@@ -508,11 +512,14 @@ class PhpPlugin extends Plugin
         $container->setClass(Rule::class, Rules\Arrays\DuplicateKeysInLiteralArraysRule::class, true);
         $container->setClass(Rule::class, Rules\Arrays\InvalidKeyInArrayDimFetchRule::class, true, ['reportMaybes']);
         $container->setClass(Rule::class, Rules\Arrays\InvalidKeyInArrayItemRule::class, true, ['reportMaybes']);
-        $container->setClass(Rule::class, Rules\Arrays\IterableInForeachRule::class, true);
-        $container->setClass(Rule::class, Rules\Arrays\NonexistentOffsetInArrayDimFetchRule::class, true);
+	$container->setClass(Rule::class, Rules\Arrays\IterableInForeachRule::class, true);
+
+
+
+        $container->setClass(Rule::class, Rules\Arrays\NonexistentOffsetInArrayDimFetchRule::class, true, [null, 'reportMaybes']);
         // $container->setClass(Rule::class, Rules\Cast\InvalidCastRule::class, true);
         $container->setClass(Rule::class, Rules\Cast\InvalidPartOfEncapsedStringRule::class, true);
-        $container->setClass(Rule::class, Rules\Cast\UselessCastRule::class, true);
+        // $container->setClass(Rule::class, Rules\Cast\UselessCastRule::class, true);
         $container->setClass(Rule::class, Rules\Classes\ClassConstantRule::class, true);
         $container->setClass(Rule::class, Rules\Classes\ExistingClassInClassExtendsRule::class, true);
         $container->setClass(Rule::class, Rules\Classes\ExistingClassInInstanceOfRule::class, true, [null, null, 'checkClassCaseSensitivity']);
@@ -561,7 +568,7 @@ class PhpPlugin extends Plugin
         $container->setClass(Rule::class, Rules\Properties\AccessPropertiesRule::class, true, [null, null, 'reportMagicProperties']);
         $container->setClass(Rule::class, Rules\Properties\AccessStaticPropertiesRule::class, true);
         $container->setClass(Rule::class, Rules\Properties\DefaultValueTypesAssignedToPropertiesRule::class, true);
-        $container->setClass(Rule::class, Rules\Properties\ExistingClassesInPropertiesRule::class, true, [null, null, 'checkClassCaseSensitivity']);
+        $container->setClass(Rule::class, Rules\Properties\ExistingClassesInPropertiesRule::class, true, [null, null, 'checkClassCaseSensitivity', 'checkThisOnly']);
         $container->setClass(Rule::class, Rules\Properties\ReadingWriteOnlyPropertiesRule::class, true, [null, null, null, 'checkThisOnly']);
         $container->setClass(Rule::class, Rules\Properties\TypesAssignedToPropertiesRule::class, true);
         $container->setClass(Rule::class, Rules\Properties\WritingToReadOnlyPropertiesRule::class, true, [null, null, null, 'checkThisOnly']);

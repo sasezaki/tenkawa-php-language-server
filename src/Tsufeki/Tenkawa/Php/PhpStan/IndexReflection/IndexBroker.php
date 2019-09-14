@@ -199,7 +199,7 @@ class IndexBroker extends Broker implements AnalysedDocumentAware, AnalysedCache
         return $classReflection;
     }
 
-    public function getAnonymousClassReflection(New_ $node, Scope $scope): ClassReflection
+    public function getAnonymousClassReflection(Class_ $node, Scope $scope): ClassReflection
     {
         if (!$node->class instanceof Class_) {
             throw new \PHPStan\ShouldNotHappenException();
