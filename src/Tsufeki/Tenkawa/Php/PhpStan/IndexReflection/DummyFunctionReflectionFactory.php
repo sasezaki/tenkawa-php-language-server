@@ -14,6 +14,7 @@ class DummyFunctionReflectionFactory implements FunctionReflectionFactory
         array $phpDocParameterTypes,
         ?Type $phpDocReturnType,
         ?Type $phpDocThrowType,
+	?string $deprecatedDescription,
         bool $isDeprecated,
         bool $isInternal,
         bool $isFinal,

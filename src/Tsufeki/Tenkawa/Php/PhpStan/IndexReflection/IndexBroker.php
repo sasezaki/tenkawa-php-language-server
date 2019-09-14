@@ -12,6 +12,7 @@ use PHPStan\Broker\Broker;
 use PHPStan\Broker\ClassNotFoundException;
 use PHPStan\Broker\FunctionNotFoundException;
 use PHPStan\File\RelativePathHelper;
+use PHPStan\File\FuzzyRelativePathHelper;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\FunctionReflection;
 use PHPStan\Reflection\MethodsClassReflectionExtension;
@@ -116,6 +117,7 @@ class IndexBroker extends Broker implements AnalysedDocumentAware, AnalysedCache
             $dynamicMethodReturnTypeExtensions,
             $dynamicStaticMethodReturnTypeExtensions,
             $dynamicFunctionReturnTypeExtensions,
+	    [],
             new DummyFunctionReflectionFactory(),
             $phpDocResolver,
             // stubs:
@@ -139,7 +141,7 @@ class IndexBroker extends Broker implements AnalysedDocumentAware, AnalysedCache
                 {
                 }
             },
-            new class() extends RelativePathHelper {
+            new class() extends FuzzyRelativePathHelper {
                 public function __construct()
                 {
                 }
